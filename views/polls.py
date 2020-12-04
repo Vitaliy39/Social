@@ -23,7 +23,7 @@ def index(poll):
 
 @poll_blueprint.route('<poll>/<email>', methods=['GET', 'POST'])
 def polling(email, poll):
-    print(email)
+    #print(email)
     coll_name = f'{poll}_answers'
     questions = Database.find(collection=poll, query={})
     if request.method == 'GET':
