@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<label>Выберите тип вопроса</label>
+<div class="form-group" id="app">
+    <form name="query">
+        <select name="selectq" class="custom-select my-1 mr-sm-2" v-model="selected" required>
+        <option disabled value="">Выберите один из вариантов</option>
+            {% for type in types %}
+                <option>{{type}}</option>
+            {% endfor %}
+        </select>
+        <label>Выбрано: [[ selected ]]</label>
+        <div v-if="selected==='table'">
+            <label>Введите вопрос</label>
+            <input type="text" name="question" class="form-control" required>
+            <label>Введите размер таблицы</label>
+            <div class="row">
+                <div class="col">
+                    <input type="number" class="form-control" name="height" min="2" onclick="getHeight()" placeholder="Высота" required>
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" name="width" min="2" onclick="getHeight()" placeholder="Ширина" required>
+                </div>
+
+                <script>
+                function getHeight() {
+                    var text_height = document.getElementsByName("height")[0];
+                    var val_height = text_height.value;
+                    document.getElementById("height-text").innerText = 'Высота: ' + val_height;
+                    var text_width = document.getElementsByName("width")[0];
+                    var val_width = text_width.value;
+                    document.getElementById("width-text").innerText = 'Ширина: ' + val_width;
+                };
+                    </script>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </div>
+        <div v-else-if="selected==='text'">
+            <label>Введите вопрос</label>
+            <input type="text" name="question" class="form-control" required>
+            <p></p>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+        <div v-else-if="selected==='one' || selected==='many'">
+            <label>Введите вопрос</label>
+            <input type="text" class="form-control" name="question">
+            <label>Введите число ответов</label>
+            <input type="number" class="form-control" name="nums" onclick="getNums()">
+            <script>
+                    function getNums() {
+                        //
+                        var text = document.getElementsByName("nums")[0];
+                        var nums = text.value;
+                        document.getElementById("nums-text").innerText = 'Числов ответов: '+ nums;
+                    }
+             </script>
+            <p id="nums-text"></p>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type = "text/javascript" src="{{ url_for('static', filename='js/add.js') }}"></script>
+{% endblock %}

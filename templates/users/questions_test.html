@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+  {% block content %}
+<form method='get'>
+  <form>
+  <div class="form-group row">
+    <label for="poll_link" class="col-sm-2 col-form-label">Ссылка на опрос</label>
+    <div class="col-sm-10">
+      <input type="text" readonly class="form-control-plaintext" id="poll_link" value="{{address}}/poll/{{item}}">
+    </div>
+  </div>
+  </form>
+  <div class="form-group" >
+      <div class="col-sm">
+        <ol>
+          <form>
+            <div class="form-group">
+          {% for question in questions %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Вопрос</th>
+      <th scope="col">Тип вопроса</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for question in questions %}
+        <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{question.question}}</td>
+        <td>{{question.qtype}}</td>
+            <td><a href="{{ url_for('user.delete_question', item=item, question=question)}}" class="btn btn-danger">Удалить</a></td>
+            <td></td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+          {% endfor %}
+        </div>
+        </form>
+        </ol>
+        <a href="{{ url_for('user.add', item=item)}}">Добавить вопрос</a>
+      </div>
+    </div>
+  </form>
+{% endblock %}

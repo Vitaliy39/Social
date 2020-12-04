@@ -1,0 +1,66 @@
+{% extends "base_poll.html" %}
+{% block content %}
+<form method='post'>
+  <div class="form-group" >
+      <div class="col-sm">
+        <ol>
+          <form>
+            <div class="form-group">
+          {% for question in questions %}
+          <li><label for="{{question.question}}">{{question.question}}</label>
+            {% if question.qtype== "text" %}
+            <input id="{{question.question}}" name="{{question.question}}" type="text" class="form-control">
+            {% elif question.qtype=="one" %}
+              {% for answ in range(question.nums|int) %}
+              <div class="form-check" name="{{question.question}}">
+                <input class="form-check-input" type="radio" name="{{question.question}}" id="{{question.question}}{{answ}}" value="{{question['answname' + answ|string]}}">
+                <label class="form-check-label" for="{{question.question}}{{answ}}">
+                  {{question['answname' + answ|string]}}
+                </label>
+              </div>
+              {% endfor %}
+            {% elif question.qtype=="many" %}
+            {% for answ in range(question.nums|int) %}
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="{{question.question}}{{answ}}" id="{{question.question}}{{answ}}" value="{{question['answname' + answ|string]}}">
+                <label class="form-check-label" for="{{question.question}}{{answ}}">
+                  {{question['answname' + answ|string]}}
+                </label>
+              </div>
+              {% endfor %}
+            {% elif question.qtype=="table" %}
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  {% for w in range(question.width|int) %}
+                  <th scope="col">{{question['qname' + w |string]}}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for h in range(question.height|int) %}
+                <div class="form-check">
+                  <tr>
+                    <th scope="row">{{question['answname' + h|string]}}</th>
+                    {% for j in range(0, question.width |int) %}
+                    <div class="form-check" name="{{question['answname' + h|string]}}">
+                    <td><input class="form-check-input" type="radio" name="{{question['answname' + h|string]}}" value="{{question['qname' + j |string]}}"></td>
+                  </div>
+                    {% endfor %}
+                  </tr>
+                </div>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </div>
+        </form>
+        </ol>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<form>
+    <div class="form-group">
+        <label>Тип вопроса </label>
+        <input name="qtype" class="form-control" type="text" value="{{params.selectq}}" readonly>
+        <label>Вопрос</label>
+        <input name="question" class="form-control" type="text" value="{{params.question}}" readonly>
+        <label>Количество ответов</label>
+        <input name="nums" class="form-control" type="text" value="{{params.nums}}" readonly>
+        <label>Введите ответы</label>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ответ</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if params.nums|int == 5 %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td><input name="answname1" class="form-control" type="text" value="Абсолютно не согласен"></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td><input name="answname2" class="form-control" type="text" value="Не согласен"></td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td><input name="answname3" class="form-control" type="text" value="Отчасти согласен"></td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td><input name="answname4" class="form-control" type="text" value="Согласен"></td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td><input name="answname5" class="form-control" type="text" value="Полностью согласен"></td>
+                </tr>
+              {% else %}
+              {% for i in range(0, params.nums |int) %}
+              <tr>
+                <th scope="row">{{i+1}}</th>
+                <td><input name="answname{{i}}" placeholder="Введите ответ"></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-primary">Отправить</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<form>
+<div class="form-group">
+  <label>Тип вопроса </label>
+<input name="qtype" class="form-control" type="text" value="{{params.selectq}}" readonly>
+<label></label>Ширина</label>
+<input name="width" class="form-control" type="text" value="{{params.width}}" readonly>
+<label name="height">Высота</label>
+<input name="height" class="form-control" type="text" value="{{params.height}}" readonly>
+<label name="question">Вопрос</label>
+<input name="question" class="form-control" type="text" value="{{params.question}}" readonly>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+          {% for i in range(0, params.width |int) %}
+        <th scope="col"><input name="qname{{i}}" placeholder="Введите ответ на вопрос"></th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for k in range(0, params.height |int) %}
+      <tr>
+        <th scope="row"><input name="answname{{k}}" placeholder="Введите вопрос"></th>
+        {% for j in range(0, params.width |int) %}
+        <td></td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<button type="submit" class="btn btn-primary">Отправить</button>
+</div>
+</form>
+{% endblock %}

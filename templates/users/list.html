@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+  {% block content %}
+
+<label>Hello {{email}}</label>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Название коллекции</th>
+      <th scope="col">Описание</th>
+        <th scope="col">Ссылка на ответы</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for item in collections %}
+        <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td><a href="{{ url_for('user.questions', item=item['name'])}}">{{ item['name'] }}</a></td>
+        <td>{{ item['description'] }}</td>
+        <td><a href="{{ url_for('user.answers', answer=item['name'])}}">Ответы</a></td>
+        <td><a href="{{ url_for('user.delete_collection', item=item)}}" class="btn btn-danger">Удалить</a></td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<form class="form-inline" action="/list/" method="post">
+    <div class="form-group mb-2">
+    <input type="text"  class="form-control" name="newcollection" placeholder="Название">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <input type="text" class="form-control" name="newdescription" placeholder="Описание">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Добавить новую коллекцию</button>
+</form>
+
+{% endblock %}
