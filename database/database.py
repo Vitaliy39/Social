@@ -4,7 +4,7 @@ import pymongo
 
 
 class Database:
-    URI = 'mongodb://127.0.0.1:27017/Sociology'
+    URI = 'mongodb+srv://Sociologist:123@cluster0.ay5o5.mongodb.net/Sociology?retryWrites=true&w=majority'
     DATABASE = pymongo.MongoClient(URI).get_default_database()
 
     @staticmethod

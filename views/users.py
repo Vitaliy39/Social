@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
 
 user_blueprint = Blueprint('user', __name__)
-ADDRESS = 'http://127.0.0.1:5000'
+ADDRESS = 'https://socialbfu.herokuapp.com/'
 
 
 @user_blueprint.route('/', methods=['GET', 'POST'])
