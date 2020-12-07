@@ -38,22 +38,20 @@ def register():
     if request.method == 'POST':
         email = request.form.get('email')
         password = generate_password_hash(request.form.get('password'))
-        #print(password)
         user = Database.find_one('users', {'email': email})
-        #print(user)
         if user:
             return (render_template('users/register.html', message='Данный пользователь уже существует'))
         else:
-            Database.insert('users', {'email': email, 'password': password, 'collections': [{}] })
+            Database.insert('users', {'email': email, 'password': password, 'collections': [{}]})
             return redirect(url_for('user.login'))
+
 
 @user_blueprint.route('/<item>/<question>')
 def delete_question(item, question):
     if (request.method == 'GET') and ('email' in session):
-        #Database.delete(collection=item, query=question)
         questions = Database.find(collection=item, query={})
         for i in questions:
-            if (str(i)==str(question)):
+            if (str(i) == str(question)):
                 Database.delete(collection=item, query=i)
         return (render_template('users/questions_test.html', questions=questions, item=item, address=ADDRESS))
     else:
@@ -67,23 +65,19 @@ def delete_collection(item):
         if request.method == 'GET':
             new_user = copy.deepcopy(user)
             for i in new_user['collections']:
-                if (str(i) ==str(item)):
+                if (str(i) == str(item)):
                     new_user['collections'].remove(i)
-            #print(user['collections'].remove(item))
-            #new_collection = item
-            #new_user = copy.deepcopy(item)
             Database.update(collection='users', query=user, data=new_user)
             try:
                 return render_template('users/list.html', email=(session['email']), collections=user['collections'])
             except:
                 return render_template('users/list.html', email=(session['email']), collections=[])
 
+
 @user_blueprint.route('/list/', methods=['GET', 'POST'])
 def list():
     if 'email' in session:
         user = Database.find_one('users', {'email': session['email']})
-        #print(user)
-        # print(user['collections'])
         if request.method == 'GET':
             try:
                 return render_template('users/list.html', email=(session['email']), collections=user['collections'])
@@ -95,14 +89,12 @@ def list():
             new_description = request.form.get('newdescription')
             new_collection = {'name': new_name, 'description': new_description}
             new_user = copy.deepcopy(user)
-            #new_user['collections'] = []
             if new_user['collections']:
                 new_user['collections'].append(new_collection)
             else:
                 new_user['collections'] = []
                 new_user['collections'].append(new_collection)
             Database.update(collection='users', query=user, data=new_user)
-            #print(new_user)
             return render_template('users/list.html', email=(session['email']), collections=user['collections'])
     else:
         return 'Вы не авторизованы'
@@ -136,30 +128,28 @@ def questions(item):
 def add(item):
     types = ['table', 'one', 'many', 'text']
     params = request.args.to_dict()
-    #print(len(params))
-    #(params)
+    # print(len(params))
+    # (params)
     if (len(params) > 1):
         try:
             if params['selectq'] == 'table':
-                #print(params)
+                # print(params)
                 return render_template('users/add_table.html', params=params)
             if params['selectq'] == 'text':
                 data = dict(params)
                 data['qtype'] = data['selectq']
                 del data['selectq']
                 Database.insert(collection=item, query=data)
-
                 return render_template('users/add.html', types=types)
-                #return request(url_for('user.list'))
             else:
                 return render_template('users/add_variant.html', params=params)
         except:
             print(params)
             if params['qtype']:
-               data = dict(params)
-               print(data)
-               Database.insert(collection=item, query=data)
-               return (render_template('users/add.html', item=item, types=types))
+                data = dict(params)
+                print(data)
+                Database.insert(collection=item, query=data)
+                return (render_template('users/add.html', item=item, types=types))
     return render_template('users/add.html', types=types)
 
 
@@ -172,6 +162,7 @@ def logout():
 @user_blueprint.route('/create_table/', methods=['GET', 'POST'])
 def create_table(params):
     return render_template('questions/add_table.html', params=params)
+
 
 def delete(params):
     print(params)
